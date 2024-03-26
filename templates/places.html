@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-3">    
+    <a href="{% url 'places:add' %}" class="btn btn-primary" style="float: right; margin-bottom: 20px; ">Qo'shish</a>
+    <table class="table table-dark table-striped table-hover" style="cursor: pointer;">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Viloyat</th>
+                <th scope="col" style=" width: 30%; text-align: center;">Amalar</th>
+            </tr>
+            </thead>
+            {%for place in places%}
+            <tbody>
+                <tr>
+                    <th scope="row">{{place.id}}</th>
+                    <td>{{place.name}}</td>
+                    <td>{{place.addres}}</td>
+                    <td style="display: flex; align-items: center; justify-content: space-around;">
+                        <a href="{% url 'places:detail' place.id %}"class='btn btn-primary' style="border: 1px solid white;">Ko'rish</a>
+                        <a href="{% url 'places:update' place.id %}"class='btn btn-success' style="border: 1px solid white;">Update</a>
+                        <a href="{% url 'places:delete' place.id %}"class='btn btn-danger' style="border: 1px solid white;">Ko'rish</a>
+                    </td>
+                </tr>
+            
+            </tbody>
+            {%endfor%}
+        </table>
+    </div>
+    
+    
+{% endblock  %}
+</body>
+</html>

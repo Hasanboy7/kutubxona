@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{%extends 'base.html'%}
+
+{% block title%}
+    Leding_page
+{%endblock%}
+
+{%block content%}
+    <div class="container">
+        <h2 class="text-center">{{place.addres}}</h2>
+        <p class="fs-5">{{place.description}}</p>
+        <img src={{place.img.url}} alt="" style="width: 100%;">
+    </div>
+    
+{%endblock%}
