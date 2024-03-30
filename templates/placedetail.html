@@ -1,15 +1,45 @@
 <!DOCTYPE html>
 {%extends 'base.html'%}
+{% load crispy_forms_tags %}
 
 {% block title%}
     Leding_page
 {%endblock%}
 
 {%block content%}
-    <div class="container">
+    <div class="container-full">
         <h2 class="text-center">{{place.addres}}</h2>
         <p class="fs-5">{{place.description}}</p>
-        <img src={{place.img.url}} alt="" style="width: 100%;">
+        <img src={{place.place_img.url}} alt="" style="width: 100%; height: 500px;">
+
+        <h1 class="mt-3">Izohlar</h1>
+        <hr>
     </div>
-    
+    <div class="container mb-3">
+        <div class="container">
+            <form action="{% url 'places:comment' place.id %}" method="post">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button type="submit" class="btn btn-primary m-auto w-100">submit</button>
+            </form>
+        </div>
+        {% for izoh in places.izohlar.all %}
+            <div class="row mt-2 border">
+                <div class="col-2">
+                    <img src="{{izoh.user.img.url}}" alt="bu yerda rasm" style="width: 150px; border-radius: 50%;">
+                </div>
+                <div class="col border">
+                    <span style="text-transform: capitalize; font-size: 27px;">{{izoh.user.username}}</span>
+                    <span>{{izoh.create_date}}</span> berilgan ovozlar
+                    <span class="text-warning">{{izoh.stars_give}}</span>
+                    <div class="row border h-100">
+                        <div class="col">
+                            <p>{{izoh.comment_text}}</p>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        {% endfor %}
+    </div>
 {%endblock%}

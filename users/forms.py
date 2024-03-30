@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from .models import User
 from django import forms
 
 
@@ -62,11 +62,10 @@ def clean_username(self):
        return username
 
 class UpdateForm(forms.ModelForm):
-    username = forms.CharField(required=True, label='Username', widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
-    first_name = forms.CharField(required=True, label='First_name',widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
-    last_name = forms.CharField(required=True, label='Last_name',widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
-    email = forms.EmailField(required=True, label='Email', widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
+    # username = forms.CharField(required=True, label='Username', widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
+    # first_name = forms.CharField(required=True, label='First_name',widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
+    # last_name = forms.CharField(required=True, label='Last_name',widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
+    # email = forms.EmailField(required=True, label='Email', widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
     class Meta:
         model = User
-        fields = ['username','first_name','last_name','email']
-
+        fields = ['username','first_name','last_name','email','img','phone_number']

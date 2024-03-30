@@ -115,7 +115,6 @@ class Login(TestCase):
         user=User.objects.create(username="hasanboy",first_name='Hasanboy',last_name='Mamatkarimov')
         user.set_password('root')
         user.save()
-
         self.client.post(
             reverse('users:login'),
             date={
@@ -125,10 +124,3 @@ class Login(TestCase):
         )
         user_count=User.objects.count()
         self.assertEqual(user.is_authenticated)
-
-
-
-
-
-
-
