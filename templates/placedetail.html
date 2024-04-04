@@ -16,30 +16,49 @@
         <hr>
     </div>
     <div class="container mb-3">
-        <div class="container">
+        <div class="container mb-5">
             <form action="{% url 'places:comment' place.id %}" method="post">
                 {% csrf_token %}
                 {{form|crispy}}
                 <button type="submit" class="btn btn-primary m-auto w-100">submit</button>
             </form>
         </div>
-        {% for izoh in places.izohlar.all %}
-            <div class="row mt-2 border">
-                <div class="col-2">
-                    <img src="{{izoh.user.img.url}}" alt="bu yerda rasm" style="width: 150px; border-radius: 50%;">
-                </div>
-                <div class="col border">
-                    <span style="text-transform: capitalize; font-size: 27px;">{{izoh.user.username}}</span>
-                    <span>{{izoh.create_date}}</span> berilgan ovozlar
-                    <span class="text-warning">{{izoh.stars_give}}</span>
-                    <div class="row border h-100">
-                        <div class="col">
-                            <p>{{izoh.comment_text}}</p>
-                        </div>
-                    </div>
+        
+            <div class="row mt-2">
+                <!-- <div class="col-2">
+                    <img src="{{izoh.user.img.url}}" alt="bu yerda rasm" style="width: 100px; border-radius: 50%;">
+                </div> -->
+                <div class="col">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">UserImg</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Ball</th>
+                          </tr>
+                        </thead>
+                        {% for izoh in place.izohlar.all %}
+                        <tbody>
+                          <tr style="font-size: 20px;">
+                            <th scope="row">{{izoh.id}}</th>
+                            <th><img src="{{izoh.user.img.url}}" alt="bu yerda rasm" style="width: 100px; border-radius: 50%;"></th>
+                            <td>{{izoh.user}}</td>
+                            <td>{{izoh.user.username}}</td>
+                            <td>
+                                <p style="font-size: 25px; font-weight: 900; color: yellow;">{{izoh.stars_give}}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="5" rowspan="2" style="font-size: 20px; color: rgb(5, 242, 255);">{{izoh.comment_text}}</td>
+                          </tr>
+                        </tbody>
+                        {% endfor %}
+                      </table>
                 </div>
                
             </div>
-        {% endfor %}
+        
     </div>
 {%endblock%}

@@ -19,6 +19,11 @@ class PlaceOwnerAdmin(admin.ModelAdmin):
     list_display = ('id','place','owner')
     search_fields = ('place','owner')
 
+class Freands(admin.ModelAdmin):
+    list_display=('id','from_user','to_user')
+    list_display_links=('id','to_user')
+
+admin.site.register(FirendRequest,Freands)
 admin.site.register(Place,PlaceAdmin)
 admin.site.register(Owner,OwnerAdmin)
 admin.site.register(PlaceOwner,PlaceOwnerAdmin)

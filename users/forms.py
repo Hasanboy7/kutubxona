@@ -1,10 +1,6 @@
 from .models import User
 from django import forms
 
-
-
-
-
 class RegisterForm(forms.ModelForm):
     username = forms.CharField(required=True, label='Username', widget=forms.TextInput(attrs={'class': "form-control"}))
     first_name = forms.CharField(required=True, label='First_name', widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -12,11 +8,11 @@ class RegisterForm(forms.ModelForm):
     email = forms.EmailField(required=True, label='Email',widget=forms.TextInput(attrs={'class': "form-control"}))
     password = forms.CharField(required=True, label='Password', widget=forms.PasswordInput(attrs={'class': "form-control"}))
     password_config = forms.CharField(required=True, label='Password_config', widget=forms.PasswordInput(attrs={'class': "form-control"}))
-    # photo = forms.ImageField(required=True, label='Image', widget=forms.FileInput(attrs={'class': "form-control"}))
-
+    img = forms.ImageField(required=True, label='Image', widget=forms.FileInput(attrs={'class': "form-control"}))
+    photo=forms.CharField(required=True,label='Phone_number',widget=forms.TextInput(attrs={'class':'form-control'}))
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password','password_config']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password','password_config','img','photo']
 
     def clean_password_config(self):
         password=self.cleaned_data['password']
@@ -53,19 +49,32 @@ class LoginForm(forms.Form):
     password = forms.CharField(required=True, label='Password',widget=forms.PasswordInput(attrs={'class': "form-control"}))
 
 
-def clean_username(self):
-       username = self.cleaned_data.get("username")
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
 
-       if len(username) < 5 or len(username) > 30:
-           raise forms.ValidationError("Usernamegiz 5-30 oraligida bo'lish kerak")
+        if len(username) < 5 or len(username) > 30:
+            raise forms.ValidationError("Usernamegiz 5-30 oraligida bo'lish kerak")
 
-       return username
+        return username
 
 class UpdateForm(forms.ModelForm):
-    # username = forms.CharField(required=True, label='Username', widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
-    # first_name = forms.CharField(required=True, label='First_name',widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
-    # last_name = forms.CharField(required=True, label='Last_name',widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
-    # email = forms.EmailField(required=True, label='Email', widget=forms.TextInput(attrs={'class': "form-control fs-5 p-2"}))
+    
     class Meta:
         model = User
         fields = ['username','first_name','last_name','email','img','phone_number']
+
+class ResetPassword(forms.Form):
+    old_password = forms.CharField(required=True, label='Password', widget=forms.PasswordInput(attrs={'class': "form-control"}))
+    new_password = forms.CharField(required=True, label='Password', widget=forms.PasswordInput(attrs={'class': "form-control"}))
+    password_config = forms.CharField(required=True, label='Password_config', widget=forms.PasswordInput(attrs={'class': "form-control"}))
+
+
+    def clean(self):
+        new_password=self.cleaned_data['new_password']
+        password_config=self.cleaned_data['password_config']
+
+        if new_password!=password_config:
+            raise forms.ValidationError('Password bir-biriga mos emas')
+        
+        return self.cleaned_data
+

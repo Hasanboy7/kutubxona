@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        {% for i in users_list %}
+        <div class="row mt-4">
+            <div class="col-2">
+                <img src="{{i.img.url}}" alt="" style="width: 150px; height:150px; border-radius: 50%;" >
+            </div>
+            <div class="col" style="display: flex;align-items: center;">
+                <div style="width: 70%;">
+                    <b>{{i.username}}</b><br>
+                    <i>{{i.email}}</i>
+                    <p style="margin-top: 10px;">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit veniam qui deserunt vero sequi, alias quo molestias, provident laudantium omnis tempora doloribus blanditiis repudiandae nesciunt iste totam similique quos fugiat.</p>
+                </div>
+                <div style="width: 20%; display: flex; justify-content: space-around;">
+                    <a href="{%url 'places:send' i.id%}" class="btn btn-success">Send Request</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock  %}

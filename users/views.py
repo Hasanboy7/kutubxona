@@ -7,21 +7,23 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from .forms import RegisterForm,LoginForm,UpdateForm
+from .forms import RegisterForm,LoginForm,UpdateForm,ResetPassword
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 def register(request):
-    form = RegisterForm()
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegisterForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
-            messages.info(request,"Registratsadan muffaqyatli o'ttingiz")
+            messages.info(request, "Registratsadan muffaqyatli o'ttingiz")
             return redirect('users:login')
+    else:
+        form = RegisterForm()
        
-
     return render(request, 'users/register.html', context={'form': form})
 
 class Profil(View):
@@ -38,9 +40,7 @@ class LogInView(View):
         if form.is_valid():
             username=form.cleaned_data['username']
             password=form.cleaned_data['password']
-            
             user=authenticate(username=username,password=password)
-
             if user is not None:
                 login(request,user)
                 messages.success(request,'Sayitga maffaqyatli tashrif buyurdingiz')
@@ -67,3 +67,27 @@ class UpdateView(LoginRequiredMixin,View):
                 return redirect('landing_page')
 
         return render(request, 'users/update.html', context={'form': form})
+    
+
+class ResetPasswordView(LoginRequiredMixin,View):
+    def get(self,request):
+        form=ResetPassword()
+        return render(request,'users/reset_password.html',context={'form':form})
+    
+    def post(self,request):
+        form=ResetPassword(request.POST)
+        user=request.user
+        if form.is_valid():
+            if check_parol(user,form.cleaned_data['old_password']):
+                user.set_password(form.cleaned_data['password_config'])
+                user.save()
+                return redirect('users:login')
+            else:
+                return render(request,'users/reset_password.html',context={'form':form})
+            
+        return render(request,'users/reset_password.html',context={'form':form})
+
+
+def check_parol(user,password):
+    return user.check_password(password)
+    

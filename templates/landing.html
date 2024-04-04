@@ -2,41 +2,52 @@
 {% load static %}
 {% block title%}
     Leding_page
-{%endblock%}
-
+{%endblock title%}
+    
 {%block content%}
-        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active" data-bs-interval="10000">
-                <img src="{% static "images/kutubxona1.jpg" %}" class="d-block w-100" alt="..." style="height: 90vh;">
+    <div class="container posts-content" style="margin-top:20px;">
+      <div class="row"> <!-- Centering the content horizontally -->
+        <div class="col-lg-6">
+            {% for review in place %}
+          <div class="card mb-4" style="border: 1px solid rgba(24,28,33,0.06); width: 150%;float: left;">
+            <div class="card-body">
+              <div class="media mb-3">
+                <p>
+                  <b>Nomi:</b>
+                  <span style="font-size: 20px;">{{review.place.name}}</span>
+                </p>
+                <img src="{{ review.user.img.url }}" class="d-block ui-w-40 rounded-circle" alt="" style="width: 60px; height: 60px;">
+                <div class="media-body ml-3">
+                  <i><b>{{ review.user.username }}</b></i> rated it <b>{{ review.stars_give }}</b> stars
+                  <div class="text-muted small">{{ review.create_date }}</div>
+                </div>
               </div>
-              <div class="carousel-item" data-bs-interval="2000">
-                <img src="{% static "images/kutubxona2.jpg" %}" class="d-block w-100" alt="..." style="height: 90vh;">
-              </div>
-              <div class="carousel-item">
-                <img src="{% static "images/kutubxona3.jpg" %}" class="d-block w-100" alt="..." style="height: 90vh;">
-              </div>
+              
+              <p>
+                <b>Comment:</b>
+                <span>
+                  {{ review.comment_text }}
+                </span>
+              </p>
+              
+              <a href="javascript:void(0)" class="ui-rect ui-bg-cover" style="background-color: transparent; background-position: center center; background-size: cover; display: block; width: 100%; position: relative;">
+                <img src="{{ review.place.place_img.url }}" class="ui-rect-content" alt="" width="100%" height="400px">
+              </a>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+            <div class="card-footer" style="border-color: rgba(24,28,33,0.06);">
+              <a href="javascript:void(0)" class="d-inline-block text-muted">
+                <strong>123</strong> <small class="align-middle">Likes</small>
+              </a>
+              <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
+                <strong>12</strong> <small class="align-middle">Comments</small>
+              </a>
+              <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
+                <small class="align-middle">Repost</small>
+              </a>
+            </div>
           </div>
-          <script>
-            const img=document.querySelector('img')
-            let i=0
-                setInterval(()=>{
-                    i++
-                    img.setAttribute('src',`http://127.0.0.1:8000/static/images/kutubxona${i}.jpg`)
-                    console.log(`http://127.0.0.1:8000/static/images/kutubxona${i}.jpg`);
-                    console.log(i);
-                    if (i>=3){
-                        i=0
-                    }
-                },2000)
-          </script>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
 {%endblock%}
