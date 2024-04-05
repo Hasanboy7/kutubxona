@@ -5,7 +5,7 @@
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{form|crispy}}
+            {{forms|crispy}}
             <button type="submit" class="btn btn-primary m-auto">submit</button>
         </form>
     </div>

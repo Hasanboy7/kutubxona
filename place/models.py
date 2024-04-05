@@ -5,6 +5,7 @@ from django.utils import timezone
 # Create your models here.
 class Place(models.Model):
     name=models.CharField(max_length=100)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     description=models.TextField()
     addres=models.CharField(max_length=100)
     place_img=models.ImageField(upload_to='imgas/',null=True,blank=True)

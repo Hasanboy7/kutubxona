@@ -30,8 +30,8 @@
                 <tr style="height: 200px;">
                     <th scope="row">{{place.id}}</th>
                     <td><img src="{{place.place_img.url}}" alt="" style="width: 250px; height: 250px; margin-top: 10px;"></td>
-                    <td><h5>{{place.addres}}</h5>
-
+                    <td><h5>{{place.addres}}  <span style="margin-left: 20px; color: rgb(255, 10, 10);">User:<i style="color: rgb(0, 136, 255); margin-left: 10px; text-transform: capitalize;">{{place.user}}</i></span></h5>
+                        
                         <b style="font-size: 20px; color: rgb(238, 255, 0);">{{place.name}}</b> 
                         {{place.description|truncatewords:90}} <a href="{% url 'places:detail' place.id %}" style="font-size: 20px;">Batafsil</a>
                         <div style="display: flex;align-items: center;justify-content: end; margin-top: 20px;">

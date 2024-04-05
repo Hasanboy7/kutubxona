@@ -4,7 +4,7 @@ from django.views import View
 from .models import Place,Comment,FirendRequest
 from .forms import FormPlaces,FormAdd,CommentForm
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from users.models import User
 # Create your views here.
 
@@ -25,19 +25,24 @@ class PlacesDetail(View):
         place=get_object_or_404(Place,id=pk)
         return render(request,'placedetail.html',context={'place':place,'form':form})
 
-class UpdatePlace(View):
+class UpdatePlace(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, pk):
         place_instance = Place.objects.get(id=pk)
         form = FormPlaces(instance=place_instance)
-        return render(request, 'place/update.html', context={'places': form})
-    
-    def post(self, request,pk):
+        return render(request, 'place/update.html', context={'forms': form})
+
+    def test_func(self):
+        pk = self.kwargs['pk']
+        place_instance = get_object_or_404(Place, id=pk)
+        return place_instance.user == self.request.user
+        
+    def post(self, request, pk):
         place_instance = Place.objects.get(id=pk)
-        form = FormPlaces(instance=place_instance, data=request.POST,files=request.FILES)
+        form = FormPlaces(instance=place_instance, data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
             messages.info(request, "Muvaffaqiyatli o'zgartirildi")
-            return redirect('places:list') 
+            return redirect('places:list')
         return render(request, 'place/update.html', context={'forms': form})
     
 
