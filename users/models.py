@@ -7,4 +7,8 @@ class User(AbstractUser):
     phone_number=models.CharField(max_length=13,unique=True,null=True,blank=True)
     firends=models.ManyToManyField('users.User',blank=True)
 
-
+class FriendRequest(models.Model):
+    form_user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='form_user')
+    to_user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='to_user')
+    is_accepted=models.BooleanField(default=False)
+    

@@ -38,9 +38,3 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.user} comment to {self.place.name} and gave {self.stars_give} stars"
 
-
-
-class FirendRequest(models.Model):
-    from_user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='from_user')
-    to_user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='to_user')
-    is_accepted=models.BooleanField(default=False)

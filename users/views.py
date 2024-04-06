@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.views import View
 from .forms import RegisterForm,LoginForm,UpdateForm,ResetPassword
 from django.contrib.auth.decorators import login_required
+from .models import User,FriendRequest
 
 # Create your views here.
 
@@ -91,3 +92,52 @@ class ResetPasswordView(LoginRequiredMixin,View):
 def check_parol(user,password):
     return user.check_password(password)
     
+
+class UserView(LoginRequiredMixin,View):
+    def get(self,request):
+        users_list=User.objects.exclude(username=request.user.username)
+        firend_request=User.objects.filter(id__in=FriendRequest.objects.filter(form_user=request.user).values_list('to_user'))
+        return render(request,'users/user_list.html',context={'users_list':users_list,'firend_request':firend_request})
+
+
+class MyNetworksView(LoginRequiredMixin,View):
+    def get(self,request):
+        networks=FriendRequest.objects.filter(to_user=request.user,is_accepted=False)
+        return render(request,'users/networks_list.html',context={'networks':networks})
+
+
+class Accsept(LoginRequiredMixin,View):
+    def get(selft,request,id):
+        frend_request=FriendRequest.objects.get(id=id)
+        form_user=frend_request.form_user
+        main_user=request.user
+
+        main_user.firends.add(form_user)
+        # main_user.firends.add(main_user)
+
+        frend_request.is_accepted=True
+        frend_request.save()
+        return redirect('users:networks')
+
+
+class Ignore(LoginRequiredMixin,View):
+    def get(self,request,id):
+        friend_request=FriendRequest.objects.get(id=id)
+        friend_request.delete()
+        return redirect('users:networks')
+    
+class Delet(LoginRequiredMixin,View):
+    def get(self,request,id):
+        friend=User.objects.get(id=id)
+        user=request.user
+        user.firends.remove(friend)
+        friend.firends.remove(user)
+        return redirect('users:list')
+    
+
+class SendRequest(LoginRequiredMixin, View):
+    def get(self, request, id):
+        to_user = User.objects.get(id=id)
+        form_user = request.user
+        FriendRequest.objects.get_or_create(form_user=form_user,to_user=to_user)
+        return redirect('users:list')
