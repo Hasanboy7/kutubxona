@@ -33,10 +33,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # o'rnatilgan
     "crispy_forms",
     "crispy_bootstrap5",
+    'rest_framework',
+    # yaratilgan
     'users',
-    'place'
+    'place',
+    'api'
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
