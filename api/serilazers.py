@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from place.models import Place
-
+from place.models import Place,Comment,User
 
 
 class PlaceSerilazers(serializers.Serializer):
+
     name=serializers.CharField()
     description=serializers.CharField()
     addres=serializers.CharField()
@@ -22,3 +22,15 @@ class PlaceSerilazers(serializers.Serializer):
             place_img=place_img
         )
         return place_instance
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment  
+        fields = '__all__'
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User 
+        fields = '__all__'
+    
+        
